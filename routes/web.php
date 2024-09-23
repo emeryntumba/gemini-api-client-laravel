@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GeminiController;
+use App\Http\Controllers\WhatsappController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,3 +13,5 @@ Route::get('/gemini', function () {
 })->name('gemini.form');
 
 Route::post('/gemini/generate', [GeminiController::class, 'generate'])->name('gemini.generate');
+
+Route::post('/whatsapp/webhook', [WhatsappController::class, 'receiveMessage']);
