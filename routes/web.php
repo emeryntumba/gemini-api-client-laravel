@@ -14,4 +14,4 @@ Route::get('/gemini', function () {
 
 Route::post('/gemini/generate', [GeminiController::class, 'generate'])->name('gemini.generate');
 
-Route::post('/whatsapp/webhook', [WhatsappController::class, 'receiveMessage'])->middleware('web', 'except:/whatsapp/webhook');
+Route::post('/whatsapp/webhook', [WhatsappController::class, 'receiveMessage']);
