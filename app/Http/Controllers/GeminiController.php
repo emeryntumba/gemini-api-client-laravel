@@ -28,4 +28,11 @@ class GeminiController extends Controller
 
         return view('gemini-result', ['htmlContent' => $htmlContent]);
     }
+
+    public function getPlainText($input){
+        $response = $this->geminiService->generateContent($input);
+
+        return $response['candidates'][0]['content']['parts'][0]['text'] ?? '';
+    }
+
 }
