@@ -47,7 +47,7 @@ class WhatsappController extends Controller
             $this->twilioClient->messages->create(
                 $to,
                 [
-                    'from' => 'whatsapp:' . env('TWILIO_WHATSAPP_NUMBER'), // Your Twilio WhatsApp number
+                    'from' => 'whatsapp:' . env('TWILIO_WHATSAPP_FROM'), // Your Twilio WhatsApp number
                     'body' => $message,
                 ]
             );
