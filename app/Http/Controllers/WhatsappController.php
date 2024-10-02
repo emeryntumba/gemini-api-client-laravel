@@ -22,6 +22,8 @@ class WhatsappController extends Controller
         $responseFromAI = $this->sendToAIServer($body);
 
         $this->sendMessage($from, $responseFromAI);
+
+        return $responseFromAI;
     }
 
     private function sendToAIServer($message){
