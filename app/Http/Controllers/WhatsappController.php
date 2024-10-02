@@ -33,14 +33,13 @@ class WhatsappController extends Controller
         return $result;
     }
 
-    private function sendMessage($to, $message){
-        $sid = env('TWILIO_SID');
-        $token = env('TWILIO_AUTH_TOKEN');
+    private function sendMessage($to, $message)
+{
+    // Twilio attend une réponse XML pour WhatsApp
+    $twilioResponse = new \SimpleXMLElement('<Response/>');
+    $twilioMessage = $twilioResponse->addChild('Message', $message);
 
-        $twilio = new Client($sid, $token);
-        $twilio->messages->create($to, [
-            'from' => env('TWILIO_WHATSAPP_FROM'),
-            'body' => $message,
-        ]);
-    }
+    // Retourner la réponse XML
+    return response($twilioResponse->asXML(), 200)->header('Content-Type', 'application/xml');
+}
 }
