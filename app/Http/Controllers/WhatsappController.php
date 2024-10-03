@@ -24,7 +24,7 @@ class WhatsappController extends Controller
         $from = $request->input('From');  // WhatsApp number of the sender
         $body = $request->input('Body');  // Message from the user
 
-        $imagePath = $request->file('MediaUrl0')? $request->file('MediaUrl0')->getRealPath() : null; // URL de l'image
+        $imagePath = $request->input('MediaUrl0'); // URL de l'image
         //$mediaType = $request->input('MediaContentType0'); // Type MIME
 
         $conversation = session()->get('conversation', []);
