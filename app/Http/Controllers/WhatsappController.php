@@ -62,7 +62,7 @@ class WhatsappController extends Controller
 
         Conversation::create([
             'session_id' => session()->getId(),
-            'message' => $body,
+            'message' => $aiResponseText,
             'role' => 'bot',
         ]);
 
