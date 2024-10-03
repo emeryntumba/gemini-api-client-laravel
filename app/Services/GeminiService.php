@@ -73,7 +73,7 @@ class GeminiService
     {
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-        ])->post($this->apiUrl . 'streamGenerateContent?alt=sse&key=' . $this->apiKey, [
+        ])->post($this->apiUrl . 'generateContent?key=' . $this->apiKey, [
             'contents' => $dialogue,
             'generationConfig' => [
                 'maxOutputTokens' => $maxTokens,
