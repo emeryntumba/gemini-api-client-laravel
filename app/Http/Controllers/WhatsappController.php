@@ -23,13 +23,34 @@ class WhatsappController extends Controller
         $from = $request->input('From');  // WhatsApp number of the sender
         $body = $request->input('Body');  // Message from the user
 
-        // Process AI response
-        $responseFromAI = $this->sendToAIServer($body);
+        $mediaUrl = $request->input('MediaUrl0'); // URL de l'image
+        $mediaType = $request->input('MediaContentType0'); // Type MIME
 
-        // Send the AI response back to the user via WhatsApp
+        $responseFromAI = '';
+
+        if ($mediaUrl && strpos($mediaType, 'image/') === 0) {
+            // Si une image est envoyée, la traiter avec Gemini
+            $imagePath = $this->downloadImage($mediaUrl);
+            $responseFromAI = $this->geminiService->generateContent($body, $imagePath);
+        } else {
+            // Si aucun fichier n'est envoyé, traiter le texte uniquement
+            $responseFromAI = $this->geminiService->generateContent($body);
+        }
+
         $this->sendMessage($from, $responseFromAI);
 
         return response()->json(['status' => 'Message sent to WhatsApp']);
+    }
+
+    private function downloadImage($url)
+    {
+        $imageContents = file_get_contents($url);
+        $imagePath = storage_path('app/images/') . basename($url);
+
+        // Sauvegarder l'image localement
+        file_put_contents($imagePath, $imageContents);
+
+        return $imagePath;
     }
 
     private function sendToAIServer($message)
