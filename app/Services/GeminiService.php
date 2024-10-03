@@ -49,7 +49,29 @@ class GeminiService
         return null;
     }
 
-    // 2. Utilisation du streaming pour la génération de texte partielle
+    // 2. Chat interactif (multi-turn chat)
+    public function chatWithModel(array $dialogue)
+    {
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->post($this->apiUrl . 'generateContent?key=' . $this->apiKey, [
+            'contents' => $dialogue,
+            'generationConfig' => [
+                'maxOutputTokens' => 100,
+                'stopSequences' => [],
+                'temperature' => 1.5,
+            ],
+
+        ]);
+
+        if ($response->successful()) {
+            return $response->json();
+        }
+
+        return null;
+    }
+
+    // 3. Utilisation du streaming pour la génération de texte partielle
     public function streamGenerateContent($text)
     {
         $response = Http::withHeaders([
@@ -66,28 +88,6 @@ class GeminiService
         ]);
 
         return $response->body(); // Retourne la réponse partielle sous forme de flux
-    }
-
-    // 3. Chat interactif (multi-turn chat)
-    public function chatWithModel(array $dialogue, int $maxTokens = 100)
-    {
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post($this->apiUrl . 'generateContent?key=' . $this->apiKey, [
-            'contents' => $dialogue,
-            'generationConfig' => [
-                'maxOutputTokens' => $maxTokens,
-                'stopSequences' => [],
-                'temperature' => 1.5,
-            ],
-
-        ]);
-
-        if ($response->successful()) {
-            return $response->json();
-        }
-
-        return null;
     }
 
     // 4. Générer du texte avec configuration personnalisée

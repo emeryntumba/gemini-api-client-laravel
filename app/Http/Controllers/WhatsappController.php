@@ -24,8 +24,8 @@ class WhatsappController extends Controller
         $from = $request->input('From');  // WhatsApp number of the sender
         $body = $request->input('Body');  // Message from the user
 
-        $mediaUrl = $request->input('MediaUrl0'); // URL de l'image
-        $mediaType = $request->input('MediaContentType0'); // Type MIME
+        $imagePath = $request->file('MediaUrl0')? $request->file('MediaUrl0')->getRealPath() : null; // URL de l'image
+        //$mediaType = $request->input('MediaContentType0'); // Type MIME
 
         $conversation = session()->get('conversation', []);
 
@@ -35,7 +35,14 @@ class WhatsappController extends Controller
                 ['text' => $body]
             ]
         ];
-        $response = $this->geminiService->chatWithModel($conversation);
+
+        $response = '';
+
+        if ($imagePath){
+            $response = $this->geminiService->generateContent($body, $imagePath);
+        }else{
+            $response = $this->geminiService->chatWithModel($conversation);
+        }
 
         $aiResponseText = $response['candidates'][0]['content']['parts'][0]['text'] ?? '';
 
@@ -72,7 +79,7 @@ class WhatsappController extends Controller
         Storage::put('images/' . $imageName, $imageContents);
 
         return $imagePath;
-    }*/
+    }
 
     private function sendToAIServer($message, $imagePath = null)
     {
@@ -80,7 +87,7 @@ class WhatsappController extends Controller
         $result = $response['candidates'][0]['content']['parts'][0]['text'] ?? '';
 
         return $result;
-    }
+    }*/
 
     private function sendMessage($to, $message)
     {
