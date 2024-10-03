@@ -57,7 +57,7 @@ class GeminiService
         ])->post($this->apiUrl . 'generateContent?key=' . $this->apiKey, [
             'contents' => $dialogue,
             'generationConfig' => [
-                'maxOutputTokens' => 1000,
+                'maxOutputTokens' => 500,
                 'stopSequences' => [],
                 'temperature' => 1.5,
             ],
