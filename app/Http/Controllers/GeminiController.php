@@ -24,13 +24,7 @@ class GeminiController extends Controller
         $response = null;
 
         if ($image) {
-            // Convertir l'image en base64
-            $imagePath = $image->getPathname();
-            $imageData = base64_encode(file_get_contents($imagePath));
-            //$mimeType = $image->getMimeType();
-
-            // Appeler la méthode de GeminiService qui traite texte et image
-            $response = $this->geminiService->generateContent($inputText, $imageData);
+            $response = $this->geminiService->generateContent($inputText, $image);
         } else {
             // Si aucune image, traiter uniquement le texte
             $response = $this->geminiService->generateContent($inputText);
