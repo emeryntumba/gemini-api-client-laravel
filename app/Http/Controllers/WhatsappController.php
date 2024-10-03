@@ -35,7 +35,7 @@ class WhatsappController extends Controller
                 ['text' => $body]
             ]
         ];
-        $responseFromAI = $this->geminiService->chatWithModel($conversation);
+        $response = $this->geminiService->chatWithModel($conversation);
 
         $aiResponseText = $response['candidates'][0]['content']['parts'][0]['text'] ?? '';
 
