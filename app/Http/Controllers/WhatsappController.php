@@ -31,8 +31,8 @@ class WhatsappController extends Controller
 
         if ($mediaUrl) {
             // Si une image est envoyée, la traiter avec Gemini
-            $imagePath = $this->downloadImage($mediaUrl);
-            $responseFromAI = $this->sendToAIServer($body, $imagePath, $mediaType);
+            //$imagePath = $this->downloadImage($mediaUrl);
+            $responseFromAI = $this->sendToAIServer($body, $mediaUrl, $mediaType);
         } else {
             // Si aucun fichier n'est envoyé, traiter le texte uniquement
             $responseFromAI = $this->sendToAIServer($body);
