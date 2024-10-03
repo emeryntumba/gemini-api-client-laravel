@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conversation;
 use Illuminate\Http\Request;
 use Twilio\Rest\Client;
 use App\Services\GeminiService;
@@ -36,6 +37,12 @@ class WhatsappController extends Controller
             ]
         ];
 
+        Conversation::create([
+            'session_id' => session()->getId(),
+            'message' => $body,
+            'role' => 'user',
+        ]);
+
         $response = '';
 
         if ($imagePath){
@@ -52,6 +59,12 @@ class WhatsappController extends Controller
                 ['text' => $aiResponseText]
             ]
         ];
+
+        Conversation::create([
+            'session_id' => session()->getId(),
+            'message' => $body,
+            'role' => 'bot',
+        ]);
 
         session()->put('conversation', $conversation);
 
