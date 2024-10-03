@@ -32,10 +32,10 @@ class WhatsappController extends Controller
         if ($mediaUrl && strpos($mediaType, 'image/') === 0) {
             // Si une image est envoyée, la traiter avec Gemini
             $imagePath = $this->downloadImage($mediaUrl);
-            $responseFromAI = $this->geminiService->generateContent($body, $imagePath);
+            $responseFromAI = $this->sendToAIServer($body, $imagePath);
         } else {
             // Si aucun fichier n'est envoyé, traiter le texte uniquement
-            $responseFromAI = $this->geminiService->generateContent($body);
+            $responseFromAI = $this->sendToAIServer($body);
         }
 
         $this->sendMessage($from, $responseFromAI);
@@ -55,7 +55,7 @@ class WhatsappController extends Controller
         return $imagePath;
     }
 
-    private function sendToAIServer($message)
+    private function sendToAIServer($message, $imagePath = null)
     {
         $response = $this->geminiService->generateContent($message);
         $result = $response['candidates'][0]['content']['parts'][0]['text'] ?? '';
