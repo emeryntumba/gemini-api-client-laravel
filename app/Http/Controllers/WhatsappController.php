@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Twilio\Rest\Client;
 use App\Services\GeminiService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class WhatsappController extends Controller
 {
@@ -45,10 +46,11 @@ class WhatsappController extends Controller
     private function downloadImage($url)
     {
         $imageContents = file_get_contents($url);
-        $imagePath = storage_path('app/images/') . basename($url);
+        $imageName = uniqid() . '.jpg'; // Générer un nom de fichier unique
+        $imagePath = storage_path('app/images/') . $imageName;
 
-        // Sauvegarder l'image localement
-        file_put_contents($imagePath, $imageContents);
+        // Sauvegarder l'image dans le répertoire de stockage
+        Storage::put('images/' . $imageName, $imageContents);
 
         return $imagePath;
     }
