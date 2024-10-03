@@ -27,23 +27,42 @@ class WhatsappController extends Controller
         $mediaUrl = $request->input('MediaUrl0'); // URL de l'image
         $mediaType = $request->input('MediaContentType0'); // Type MIME
 
-        $responseFromAI = '';
+        $conversation = session()->get('conversation', []);
 
-        if ($mediaUrl) {
+        $conversation[] = [
+            'role' => 'user',
+            'parts' => [
+                ['text' => $body]
+            ]
+        ];
+        $responseFromAI = $this->geminiService->chatWithModel($conversation);
+
+        $aiResponseText = $response['candidates'][0]['content']['parts'][0]['text'] ?? '';
+
+        $conversation[] = [
+            'role' => 'model',
+            'parts' => [
+                ['text' => $aiResponseText]
+            ]
+        ];
+
+        session()->put('conversation', $conversation);
+
+        /*if ($mediaUrl) {
             // Si une image est envoyée, la traiter avec Gemini
             //$imagePath = $this->downloadImage($mediaUrl);
             $responseFromAI = $this->sendToAIServer($body, $mediaUrl);
         } else {
             // Si aucun fichier n'est envoyé, traiter le texte uniquement
             $responseFromAI = $this->sendToAIServer($body);
-        }
+        }*/
 
-        $this->sendMessage($from, $responseFromAI);
+        $this->sendMessage($from, $aiResponseText);
 
         return response()->json(['status' => 'Message sent to WhatsApp']);
     }
 
-    private function downloadImage($url)
+    /*private function downloadImage($url)
     {
         $imageContents = file_get_contents($url);
         $imageName = uniqid() . '.jpg'; // Générer un nom de fichier unique
@@ -53,7 +72,7 @@ class WhatsappController extends Controller
         Storage::put('images/' . $imageName, $imageContents);
 
         return $imagePath;
-    }
+    }*/
 
     private function sendToAIServer($message, $imagePath = null)
     {
