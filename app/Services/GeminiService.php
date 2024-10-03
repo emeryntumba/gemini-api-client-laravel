@@ -69,12 +69,18 @@ class GeminiService
     }
 
     // 3. Chat interactif (multi-turn chat)
-    public function chatWithModel(array $dialogue)
+    public function chatWithModel(array $dialogue, int $maxTokens = 100)
     {
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
         ])->post($this->apiUrl . 'generateContent?key=' . $this->apiKey, [
-            'contents' => $dialogue
+            'contents' => $dialogue,
+            'generationconfig' => [
+                'maxOutputTokens' => $maxTokens,
+                'stopSequences' => [],
+                'temperature' => 0.8,
+            ],
+
         ]);
 
         if ($response->successful()) {
