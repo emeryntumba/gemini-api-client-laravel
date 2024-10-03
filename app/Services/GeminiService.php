@@ -15,7 +15,7 @@ class GeminiService
     }
 
     // 1. Générer du contenu à partir de texte seul ou de texte avec image
-    public function generateContent($text, $imagePath = null, $mimeType = null)
+    public function generateContent($text, $imagePath = null)
     {
         $contents = [
             [
@@ -30,7 +30,7 @@ class GeminiService
             $imageData = base64_encode(file_get_contents($imagePath));
             $contents[0]['parts'][] = [
                 "inline_data" => [
-                    "mime_type" => $mimeType,
+                    "mime_type" => "image/jpeg",
                     "data" => $imageData
                 ]
             ];
