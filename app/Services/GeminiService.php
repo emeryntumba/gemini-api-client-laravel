@@ -75,10 +75,10 @@ class GeminiService
             'Content-Type' => 'application/json',
         ])->post($this->apiUrl . 'generateContent?key=' . $this->apiKey, [
             'contents' => $dialogue,
-            'generationconfig' => [
+            'generationConfig' => [
                 'maxOutputTokens' => $maxTokens,
                 'stopSequences' => [],
-                'temperature' => 0.8,
+                'temperature' => 1.5,
             ],
 
         ]);
