@@ -29,7 +29,7 @@ class WhatsappController extends Controller
         //$mediaType = $request->input('MediaContentType0'); // Type MIME
 
         if(!session()->has('instruction_sent')){
-            $instruction = "Tes réponses ne doivent jamais jamais dépasser les 1200 caractères, je veux des meilleures réponses qu'elles soient, puise profondément dans tes connaissances et affine bien les résultats. Ceci est valable aussi pour la suite de notre conversation";
+            $instruction = " Tes réponses ne doivent jamais jamais dépasser les 1200 caractères, je veux des meilleures réponses qu'elles soient, puise profondément dans tes connaissances et affine bien les résultats. Ceci est valable aussi pour la suite de notre conversation";
             $body = $body.$instruction;
             session()->put('instruction_sent', true);
         }
