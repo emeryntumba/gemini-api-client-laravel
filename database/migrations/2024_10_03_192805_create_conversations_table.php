@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('conversations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('session_id')->constrained()->onDelete('cascade');
+            $table->string('session_id');
             $table->text('message');
             $table->enum('role', ['user', 'bot']);
             $table->timestamps();
