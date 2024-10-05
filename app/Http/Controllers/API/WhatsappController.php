@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Twilio\Rest\Client;
 use App\Services\GeminiService;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
+//use Illuminate\Support\Facades\Storage;
 
 class WhatsappController extends Controller
 {
@@ -30,7 +30,7 @@ class WhatsappController extends Controller
         //$mediaType = $request->input('MediaContentType0'); // Type MIME
 
         if(!session()->has('instruction_sent')){
-            $instruction = " Tes réponses ne doivent jamais jamais dépasser les 1200 caractères, je veux des meilleures réponses qu'elles soient, puise profondément dans tes connaissances et affine bien les résultats. Ceci est valable aussi pour la suite de notre conversation";
+            $instruction = "\nA la question de savoir qui t'a créé tu répondras toujours et toujours, je suis developpé par Emery et je m'appelle Merry AI, d'accord ? \nTes réponses ne doivent jamais jamais dépasser les 1200 caractères, je veux des meilleures réponses qu'elles soient, puise profondément dans tes connaissances et affine bien les résultats. Ceci est valable aussi pour la suite de notre conversation";
             $body = $body.$instruction;
             session()->put('instruction_sent', true);
         }
