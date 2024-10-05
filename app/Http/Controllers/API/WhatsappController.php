@@ -27,7 +27,7 @@ class WhatsappController extends Controller
         $body = $request->input('Body');  // Message from the user
         $imagePath = $request->input('MediaUrl0'); // URL de l'image
 
-        $conversation = Conversation::where('phone_number', $from)->get()->toArray();
+        $conversation = Conversation::where('phone_number', $from)->get();
 
         if(empty($conversation)){
             $instruction = "\nAu sujet qu'on te demande sur toi, de parler de toi, de ton développement, bref tout ce qui se rapporte à ta présentation, tu répondras toujours : 'Je suis un grand modèle linguistique, entrainé par Google et développé par Emery NTUMBA. Je m'appelle Merry AI.' bon tu peux améliorer la phrase mais l'idée reste la meme
@@ -45,7 +45,7 @@ class WhatsappController extends Controller
 
         Conversation::create([
             'phone_number' => $from,
-            'message' => $body,
+            'message' => json_encode(['text' => $body]),
             'role' => 'user',
         ]);
 
@@ -68,7 +68,7 @@ class WhatsappController extends Controller
 
         Conversation::create([
             'phone_number' => $from,
-            'message' => $aiResponseText,
+            'message' => json_encode(['text' => $aiResponseText]),
             'role' => 'bot',
         ]);
 
