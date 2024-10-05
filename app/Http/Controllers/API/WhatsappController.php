@@ -42,11 +42,10 @@ class WhatsappController extends Controller
             $conversation[] = [
                 'role' => $conv['role'],
                 'parts' => [
-                    ['text' => json_decode($conv['message'])->text]
+                    ['text' => $conv['message']]
                 ]
             ];
         }
-
 
         $conversation[] = [
             'role' => 'user',
@@ -57,7 +56,7 @@ class WhatsappController extends Controller
 
         Conversation::create([
             'phone_number' => $from,
-            'message' => json_encode(['text' => $body]),
+            'message' => $body,
             'role' => 'user',
         ]);
 
@@ -80,7 +79,7 @@ class WhatsappController extends Controller
 
         Conversation::create([
             'phone_number' => $from,
-            'message' => json_encode(['text' => $aiResponseText]),
+            'message' => $aiResponseText,
             'role' => 'bot',
         ]);
 
