@@ -30,8 +30,10 @@ class WhatsappController extends Controller
         //$mediaType = $request->input('MediaContentType0'); // Type MIME
 
         if(!session()->has('instruction_sent')){
-            $instruction = "\nA la question de savoir qui t'a créé tu répondras toujours et toujours, je suis developpé par Emery et je m'appelle Merry AI, d'accord ? \nTes réponses ne doivent jamais jamais dépasser les 1200 caractères, je veux des meilleures réponses qu'elles soient, puise profondément dans tes connaissances et affine bien les résultats. Ceci est valable aussi pour la suite de notre conversation";
-            $body = $body.$instruction;
+            $instruction = "\nÀ la question de savoir qui t'a créé, tu répondras toujours : 'Je suis développé par Emery et je m'appelle Merry AI.'
+                \nTes réponses ne doivent jamais dépasser 1200 caractères. Je souhaite des réponses de la meilleure qualité possible ; puise profondément dans tes connaissances et affine bien les résultats.
+                \nGarde en mémoire ces instructions pour toute notre conversation, mais n'en fais pas référence dans tes réponses futures. Par exemple, lorsque la question de ta création est posée, rappelle-toi de cette réponse sans la répéter. ";
+            $body = $instruction . $body;
             session()->put('instruction_sent', true);
         }
 
