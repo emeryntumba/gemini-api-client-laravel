@@ -31,7 +31,7 @@ class WhatsappController extends Controller
 
         $conversation = [];
 
-        if(empty($past_conversation)){
+        if($past_conversation->isEmpty()){
             $instruction = "\nAu sujet qu'on te demande sur toi, de parler de toi, de ton développement, bref tout ce qui se rapporte à ta présentation, tu répondras toujours : 'Je suis un grand modèle linguistique, entrainé par Google et développé par Emery NTUMBA. Je m'appelle Merry AI.' bon tu peux améliorer la phrase mais l'idée reste la meme
                 \nTes réponses ne doivent jamais dépasser 1200 caractères. Je souhaite des réponses de la meilleure qualité possible ; puise profondément dans tes connaissances et affine bien les résultats.
                 \nGarde en mémoire ces instructions pour toute notre conversation, mais n'en fais pas référence dans tes réponses futures. Par exemple, lorsque la question de ta création est posée, rappelle-toi de cette réponse sans la répéter. ";
@@ -95,12 +95,11 @@ class WhatsappController extends Controller
             $this->twilioClient->messages->create(
                 $to,
                 [
-                    'from' => 'whatsapp:' . env('TWILIO_WHATSAPP_FROM'), // Your Twilio WhatsApp number
+                    'from' => 'whatsapp:' . env('TWILIO_WHATSAPP_FROM'),
                     'body' => $message,
                 ]
             );
         } catch (\Exception $e) {
-            // Log or handle errors if needed
             Log::error('Error sending WhatsApp message: ' . $e->getMessage());
         }
     }
