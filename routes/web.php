@@ -13,5 +13,3 @@ Route::get('/gemini', function () {
 })->name('gemini.form');
 
 Route::post('/gemini/generate', [GeminiController::class, 'generate'])->name('gemini.generate');
-
-Route::post('/whatsapp/webhook', [WhatsappController::class, 'receiveMessage']);
