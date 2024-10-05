@@ -42,10 +42,11 @@ class WhatsappController extends Controller
             $conversation[] = [
                 'role' => $conv['role'],
                 'parts' => [
-                    ['text' => $conv['message']]
+                    ['text' => json_decode($conv['message'])->text]
                 ]
             ];
         }
+
 
         $conversation[] = [
             'role' => 'user',
