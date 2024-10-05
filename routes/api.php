@@ -8,4 +8,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/whatsapp/webhook', [WhatsappController::class, 'receiveMessage']);
+Route::prefix('api')->group(function(){
+    Route::post('/whatsapp/webhook', [WhatsappController::class, 'receiveMessage']);
+});
