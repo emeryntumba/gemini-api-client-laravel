@@ -25,19 +25,16 @@ class WhatsappController extends Controller
     {
         $from = $request->input('From');  // WhatsApp number of the sender
         $body = $request->input('Body');  // Message from the user
-
         $imagePath = $request->input('MediaUrl0'); // URL de l'image
-        //$mediaType = $request->input('MediaContentType0'); // Type MIME
 
-        if(!session()->has('instruction_sent')){
-            $instruction = "\nÀ la question de savoir qui t'a créé, tu répondras toujours : 'Je suis développé par Emery et je m'appelle Merry AI.'
+        $conversation = Conversation::where('phone_number', $from)->get()->toArray();
+
+        if(empty($conversation)){
+            $instruction = "\nAu sujet qu'on te demande sur toi, de parler de toi, de ton développement, bref tout ce qui se rapporte à ta présentation, tu répondras toujours : 'Je suis un grand modèle linguistique, entrainé par Google et développé par Emery NTUMBA. Je m'appelle Merry AI.'
                 \nTes réponses ne doivent jamais dépasser 1200 caractères. Je souhaite des réponses de la meilleure qualité possible ; puise profondément dans tes connaissances et affine bien les résultats.
                 \nGarde en mémoire ces instructions pour toute notre conversation, mais n'en fais pas référence dans tes réponses futures. Par exemple, lorsque la question de ta création est posée, rappelle-toi de cette réponse sans la répéter. ";
             $body = $instruction . $body;
-            session()->put('instruction_sent', true);
         }
-
-        $conversation = session()->get('conversation', []);
 
         $conversation[] = [
             'role' => 'user',
@@ -47,7 +44,7 @@ class WhatsappController extends Controller
         ];
 
         Conversation::create([
-            'session_id' => session()->getId(),
+            'phone_number' => $from,
             'message' => $body,
             'role' => 'user',
         ]);
@@ -70,46 +67,15 @@ class WhatsappController extends Controller
         ];
 
         Conversation::create([
-            'session_id' => session()->getId(),
+            'phone_number' => $from,
             'message' => $aiResponseText,
             'role' => 'bot',
         ]);
-
-        session()->put('conversation', $conversation);
-
-        /*if ($mediaUrl) {
-            // Si une image est envoyée, la traiter avec Gemini
-            //$imagePath = $this->downloadImage($mediaUrl);
-            $responseFromAI = $this->sendToAIServer($body, $mediaUrl);
-        } else {
-            // Si aucun fichier n'est envoyé, traiter le texte uniquement
-            $responseFromAI = $this->sendToAIServer($body);
-        }*/
 
         $this->sendMessage($from, $aiResponseText);
 
         return response()->json(['status' => 'Message sent to WhatsApp']);
     }
-
-    /*private function downloadImage($url)
-    {
-        $imageContents = file_get_contents($url);
-        $imageName = uniqid() . '.jpg'; // Générer un nom de fichier unique
-        $imagePath = storage_path('app/images/') . $imageName;
-
-        // Sauvegarder l'image dans le répertoire de stockage
-        Storage::put('images/' . $imageName, $imageContents);
-
-        return $imagePath;
-    }
-
-    private function sendToAIServer($message, $imagePath = null)
-    {
-        $response = $this->geminiService->generateContent($message, $imagePath);
-        $result = $response['candidates'][0]['content']['parts'][0]['text'] ?? '';
-
-        return $result;
-    }*/
 
     private function sendMessage($to, $message)
     {

@@ -10,7 +10,7 @@ class Conversation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'session_id',
+        'phone_number',
         'message',
         'role',
     ];

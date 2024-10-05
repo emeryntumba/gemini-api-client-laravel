@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('conversations', function (Blueprint $table) {
             $table->id();
-            $table->string('session_id');
+            $table->string('phone_number');
             $table->text('message');
             $table->enum('role', ['user', 'bot']);
             $table->timestamps();
