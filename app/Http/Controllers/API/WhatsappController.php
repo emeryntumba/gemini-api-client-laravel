@@ -38,14 +38,14 @@ class WhatsappController extends Controller
             $body = $instruction . $body;
         }
 
-        foreach($past_conversation as $conv){
+        /*foreach($past_conversation as $conv){
             $conversation[] = [
                 'role' => $conv['role'],
                 'parts' => [
                     ['text' => $conv['message']]
                 ]
             ];
-        }
+        }*/
 
         $conversation[] = [
             'role' => 'user',
