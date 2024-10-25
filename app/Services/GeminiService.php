@@ -68,14 +68,9 @@ class GeminiService
             return $response->json();
         }
 
-        // Capture and return a detailed error message instead of null
-        $statusCode = $response->status();
-        $errorMessage = $response->json('error') ?? $response->body();  // Retrieves specific error if available, else full body
-        return [
-            'error' => true,
-            'status_code' => $statusCode,
-            'message' => $errorMessage ?: 'Une erreur est survenue lors de la requête à l’IA.',
-        ];
+        $errorMessage = $response->json('error') ?? $response->body();
+
+        return $errorMessage;
     }
 
     // 3. Utilisation du streaming pour la génération de texte partielle
