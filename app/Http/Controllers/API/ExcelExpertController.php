@@ -51,9 +51,9 @@ class ExcelExpertController extends Controller
         // Utiliser la méthode chatWithModel pour obtenir une réponse de l'API
         $response = $this->geminiService->chatWithModel($dialogue);
 
-        if (isset($response['error'])) {
+        /*if (isset($response['error'])) {
             return response()->json(['error' => $response['error']], 500);
-        }
+        }*/
 
         // Retourner la réponse de l'API
         return response()->json([
