@@ -57,7 +57,7 @@ class ExcelExpertController extends Controller
 
         // Retourner la réponse de l'API
         return response()->json([
-            'response' => $response['contents'][0]['parts'][0]['text'] ?? "Aucune réponse disponible."
+            'response' => $response['candidates'][0]['content']['parts'][0]['text'] ?? "Aucune réponse disponible."
         ]);
     }
 }
